@@ -1,0 +1,59 @@
+@page "/new-transactions"
+@layout MainLayout
+
+@inject BisleriumCafe.Data.Repositories.Repository<NewTransaction> NewTransactionRepository;
+@inject BisleriumCafe.Data.Repositories.Repository<Membership> MembershipRepository;
+@inject BisleriumCafe.Data.Repositories.Repository<User> UserRepository;
+@inject BisleriumCafe.Data.Services.AuthService AuthService
+
+@inject ISnackbar Snackbar
+@inject IDialogService DialogService;
+
+<MudTable Elevation="0"
+          Items="@Elements"
+          FixedHeader="@Fixed_header"
+          FixedFooter="@Fixed_footer"
+          Height="@(Fixed_header || Fixed_footer ? "calc(100vh - 64px - 64px - 64px)" : "")"
+          Dense="@Dense"
+          Hover="@Hover"
+          ReadOnly="@ReadOnly"
+          Filter="new Func<NewTransaction,bool>(FilterFunc)"
+          SortLabel="Sort By"
+          RowsPerPage="25"
+          HorizontalScrollbar="true">
+    <ToolBarContent>
+        @if (AuthService.IsUserAdmin())
+        {
+            <MudStack Row="true">
+                <ImportButton T="NewTransaction" ChangeParentState="StateHasChanged" />
+                <ExportButton T="NewTransaction" />
+            </MudStack>
+        }
+        <MudSpacer />
+        <MudStack Row="true">
+            <MudTextField @bind-Value="SearchString" Label="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" Class="mt-0" Clearable="true"></MudTextField>
+            <MudTextField T="string" Class="mt-0" Label="Filter By Month" InputType="InputType.Month" Clearable="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.FilterAlt" ValueChanged="(a) => FilterByMonth(a)" />
+        </MudStack>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<NewTransaction, object>(x=>x.Id)">ID</MudTableSortLabel></MudTh>
+        <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<NewTransaction, object>(x=>x.MemberId)">Member ID</MudTableSortLabel></MudTh>
+        <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<NewTransaction, object>(x=>x.MemberName)">Member Name</MudTableSortLabel></MudTh>
+        <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<NewTransaction, object>(x=>x.TransactionDate)">Transaction Date</MudTableSortLabel></MudTh>
+        <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<NewTransaction, object>(x=>x.TotalAmount)">Total Amount</MudTableSortLabel></MudTh>
+        <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<NewTransaction, object>(x=>x.CreatedAt)">Created At</MudTableSortLabel></MudTh>
+        <MudTh Style="white-space: nowrap;"><MudTableSortLabel SortBy="new Func<NewTransaction, object>(x=>x.CreatedBy)">Created By</MudTableSortLabel></MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="ID"><MudChip>@context.Id</MudChip></MudTd>
+        <MudTd DataLabel="ID"><MudChip>@context.MemberId</MudChip></MudTd>
+        <MudTd DataLabel="Member Name">@context.MemberName</MudTd>
+        <MudTd DataLabel="Transaction Date">@context.TransactionDate</MudTd>
+        <MudTd DataLabel="Total Amount">@context.TotalAmount</MudTd>
+        <MudTd DataLabel="Created At">@context.CreatedAt</MudTd>
+        <MudTd DataLabel="Created By"><UserChip user="GetUser(context.CreatedBy)" /></MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager PageSizeOptions="new int[] { 25, 50, 100, 200, 400, }" />
+    </PagerContent>
+</MudTable>

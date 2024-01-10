@@ -1,0 +1,56 @@
+﻿@inherits LayoutComponentBase
+
+@* ryno *@
+<MudThemeProvider @ref="@_mudThemeProvider" @bind-IsDarkMode="@IsDarkMode" Theme="_currentTheme" />
+<MudDialogProvider MaxWidth="MaxWidth.ExtraSmall"
+                   DisableBackdropClick="true"
+                   Position="DialogPosition.Center"
+                   CloseOnEscapeKey="true" />
+<MudSnackbarProvider />
+
+<MudLayout>
+    <CascadingValue Value="this">
+        @Body
+    </CascadingValue>
+</MudLayout>
+
+@code {
+    private MudThemeProvider _mudThemeProvider;
+
+    internal bool IsDarkMode { get; set; }
+
+    // The OnAfterRenderAsync method is a lifecycle method in Blazor that is called after a component has been rendered in the browser
+    
+    // override keyword means OnAfterRenderAsync is being overridden which was in LayoutComponentBase. hover on (firstRender)
+    // Task: the return value will be an instance class Task. but Task actually represents that this is an async function and it performs a task
+    // but does not return a valuee
+    protected sealed override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            IsDarkMode = await _mudThemeProvider.GetSystemPreference();
+            StateHasChanged();
+        }
+    }
+
+    internal void ToggleDarkMode()
+    {
+        IsDarkMode = !IsDarkMode;
+    }
+
+    // ryno
+    private readonly MudTheme _currentTheme = new()
+        {
+            Palette = new PaletteLight
+            {
+                Primary = "#0A7BCF",
+                Secondary = "#4CAF50",
+            },
+            PaletteDark = new PaletteDark
+            {
+                Primary = "#6585e0",
+                Secondary = "#607D8B",
+            }
+        };
+
+}

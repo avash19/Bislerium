@@ -1,0 +1,10 @@
+﻿@inject BisleriumCafe.Data.Repositories.Repository<User> UserRepository
+@inject BisleriumCafe.Data.Repositories.Repository<Spare> SpareRepository
+@inject BisleriumCafe.Data.Repositories.Repository<ActivityLog> ActivityLogRepository
+@inject BisleriumCafe.Data.Repositories.Repository<Membership> MembershipRepository
+@inject BisleriumCafe.Data.Repositories.Repository<NewTransaction> NewTransactionRepository
+@inject ISnackbar Snackbar
+
+<MudTooltip Text="Sync to Disk">
+    <MudIconButton Icon="@Icons.Material.Filled.Sync" Color="Color.Primary" DisableElevation="true" Disabled="@IsSaving" OnClick="@SaveData" />
+</MudTooltip>

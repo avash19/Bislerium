@@ -1,0 +1,26 @@
+@page "/addmembership"
+
+@inject ISnackbar Snackbar
+@inject BisleriumCafe.Data.Repositories.Repository<Membership> MembershipRepository
+
+<MudDialog>
+    <DialogContent>
+        <MudForm @ref="form">
+            <!-- Membership fields -->
+            <MudTextField T="string" @bind-Value="@FullName" Label="Full Name" Required="true" RequiredError="Full Name is required!" />
+            <MudTextField T="string" @bind-Value="@Email" Label="Email" Required="true" RequiredError="Email is required!"
+                          Validation="@(new EmailAddressAttribute() { ErrorMessage = "The email address is invalid" })" />
+            <MudTextField T="string" @bind-Value="@PhoneNumber" Label="Phone Number" Required="true" RequiredError="Phone Number is required!" />
+            <MudSwitch @bind-Value="@ThisDrinkFree" Label="This Drink Free" />
+            <MudSwitch @bind-Value="@IsRegularCustomer" Label="Is  Regular" />
+            <MudSwitch @bind-Value="@GetsDiscount" Label="Gets Discount" />
+            <MudTextField T="int" @bind-Value="@DiscountPercent" Label="Discount Percent" />
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Variant="Variant.Filled" DisableElevation="true" OnClick="@(()=> form.ResetAsync())" Class="mx-2">Reset</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="AddMembership">Add</MudButton>
+    </DialogActions>
+</MudDialog>
+

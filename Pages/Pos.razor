@@ -1,0 +1,94 @@
+@page "/pos"
+@layout MainLayout
+
+@inject ISnackbar Snackbar
+@inject IDialogService DialogService;
+
+@inject BisleriumCafe.Data.Repositories.Repository<Spare> SpareRepository
+@inject BisleriumCafe.Data.Repositories.Repository<NewTransaction> NewTransactionRepository
+@inject BisleriumCafe.Data.Repositories.Repository<Membership> MembershipRepository
+
+@* to find currently logged in user *@
+@inject BisleriumCafe.Data.Services.AuthService AuthService
+
+<MudGrid Style="overflow-x: hidden;">
+
+
+    <MudItem xs="8">
+        <!-- Scrolling Grid Content -->
+        <MudPaper Elevation="3" Style="height: 100vh; overflow-y: auto;">
+            <h3>Products</h3>
+            <MudTable Items="@Products" Dense="true">
+                <HeaderContent>
+                    <MudTh>Product</MudTh>
+                    <MudTh>Price</MudTh>
+                    <MudTh>Quantity</MudTh>
+                    <MudTh>Action</MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd>@context.Name</MudTd>
+                    <MudTd>$@context.Price.ToString()</MudTd>
+                    <MudTd>
+                        <MudNumericField @bind-Value="context.AvailableQuantity" Min="0" Max="100" Step="1" />
+                    </MudTd>
+                    <MudTd>
+                        <MudButton @onclick="() => AddToCart(context)" Variant="Variant.Filled" Color="Color.Primary">
+                            <MudIcon Icon="@Icons.Material.Filled.AddCircle" />
+                        </MudButton>
+                    </MudTd>
+                </RowTemplate>
+            </MudTable>
+            <!-- Add more content as needed -->
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="4">
+        <!-- Fixed Grid Content -->
+        <MudPaper Elevation="3" Style="height: 100vh; overflow: hidden; padding: 2px;">
+            <div id="thissonee">
+                <h3>Shopping Cart</h3>
+                @if (CartItems.Count > 0)
+                {
+                    <div>
+                        <MudButton @onclick="CompleteTransaction" Variant="Variant.Filled" Color="Color.Primary">Complete Transaction</MudButton>
+                        <MudTextField @bind-Value="searchPhoneNumber" Label="Search Member by Phone Number" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" Class="mt-0" Clearable="true"></MudTextField>
+                        <MudButton @onclick="SearchMemberHandler" Variant="Variant.Filled" Color="Color.Primary">Search Member</MudButton>
+                        member: @if (foundMember != null)
+                        {
+                            <p>Member Found: @foundMember.FullName</p>
+                        }
+                        else
+                        {
+                            <p>No Member Found</p>
+                        }
+
+
+                        <div>
+                            <strong>Total:</strong> $@CalculateTotal().ToString()
+                        </div>
+                    </div>
+                }
+            </div>
+            <div style="height: 100vh;  overflow-y: auto;">
+                @foreach (var cartItem in CartItems)
+                {
+                    <MudCard>
+                        <div class="mud-card-title">
+                            <h4>@cartItem.Spare_.Name</h4>
+                        </div>
+                        <div class="mud-card-content">
+                            <p>Quantity: @cartItem.Quantity</p>
+                            <p>Subtotal: @(cartItem.Quantity * cartItem.Spare_.Price).ToString("C")</p>
+                        </div>
+                        <div class="mud-card-actions">
+                            <MudButton @onclick="() => RemoveFromCart(cartItem)" Variant="Variant.Filled" Color="Color.Secondary">
+                                <MudIcon Icon="@Icons.Material.Filled.RemoveCircle" />
+                            </MudButton>
+                        </div>
+                    </MudCard>
+                }
+            </div>
+
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+

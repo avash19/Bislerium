@@ -1,0 +1,73 @@
+@page "/export-pdfs"
+@layout MainLayout
+
+@inject BisleriumCafe.Data.Repositories.Repository<NewTransaction> NewTransactionRepository;
+@inject BisleriumCafe.Data.Repositories.Repository<Membership> MembershipRepository;
+@inject BisleriumCafe.Data.Repositories.Repository<User> UserRepository;
+@inject BisleriumCafe.Data.Services.AuthService AuthService
+
+@inject ISnackbar Snackbar
+@inject IDialogService DialogService;
+
+<MudSelect @bind-Value="monthNumber" Label="Select Month">
+
+    <MudSelectItem Value="1">January</MudSelectItem>
+    <MudSelectItem Value="2">February</MudSelectItem>
+    <MudSelectItem Value="3">March</MudSelectItem>
+    <MudSelectItem Value="4">April</MudSelectItem>
+    <MudSelectItem Value="5">May</MudSelectItem>
+    <MudSelectItem Value="6">June</MudSelectItem>
+    <MudSelectItem Value="7">July</MudSelectItem>
+    <MudSelectItem Value="8">August</MudSelectItem>
+    <MudSelectItem Value="9">September</MudSelectItem>
+    <MudSelectItem Value="10">October</MudSelectItem>
+    <MudSelectItem Value="11">November</MudSelectItem>
+    <MudSelectItem Value="12">December</MudSelectItem>
+
+</MudSelect>
+<MudButton Color="Color.Primary" OnClick="SearchMonth">Search</MudButton>
+<MudButton Color="Color.Primary" OnClick="GeneratePdfWithCustomData">Download</MudButton>
+
+<div>Top Products</div>
+<MudTable Elevation="0"
+          Items="@Top5CoffeeData"
+          FixedHeader="true"
+          Hover="true"
+          ReadOnly="true">
+
+    <HeaderContent>
+        <!-- ... (existing headers) ... -->
+        <MudTh><MudLabel>Product Name</MudLabel></MudTh>
+        <MudTh><MudLabel>Total Quantity</MudLabel></MudTh>
+        <MudTh><MudLabel>Total Revenue</MudLabel></MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <!-- ... (existing row template) ... -->
+        <MudTd DataLabel="Product Name">@context.ProductName</MudTd>
+        <MudTd DataLabel="Total Quantity">@context.TotalQuantity</MudTd>
+        <MudTd DataLabel="Total Revenue">@context.TotalRevenue</MudTd>
+    </RowTemplate>
+</MudTable>
+
+
+<div style="margin-top:10px;">Top AddIns</div>
+<MudTable Elevation="0"
+          Items="@Top5AddInData"
+          FixedHeader="true"
+          Hover="true"
+          ReadOnly="true">
+
+    <HeaderContent>
+        <!-- ... (existing headers) ... -->
+        <MudTh><MudLabel>Product Name</MudLabel></MudTh>
+        <MudTh><MudLabel>Total Quantity</MudLabel></MudTh>
+        <MudTh><MudLabel>Total Revenue</MudLabel></MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <!-- ... (existing row template) ... -->
+        <MudTd DataLabel="Product Name">@context.ProductName</MudTd>
+        <MudTd DataLabel="Total Quantity">@context.TotalQuantity</MudTd>
+        <MudTd DataLabel="Total Revenue">@context.TotalRevenue</MudTd>
+    </RowTemplate>
+</MudTable>
+

@@ -22,15 +22,12 @@
                 <HeaderContent>
                     <MudTh>Product</MudTh>
                     <MudTh>Price</MudTh>
-                    <MudTh>Quantity</MudTh>
+     
                     <MudTh>Action</MudTh>
                 </HeaderContent>
                 <RowTemplate>
                     <MudTd>@context.Name</MudTd>
                     <MudTd>$@context.Price.ToString()</MudTd>
-                    <MudTd>
-                        <MudNumericField @bind-Value="context.AvailableQuantity" Min="0" Max="100" Step="1" />
-                    </MudTd>
                     <MudTd>
                         <MudButton @onclick="() => AddToCart(context)" Variant="Variant.Filled" Color="Color.Primary">
                             <MudIcon Icon="@Icons.Material.Filled.AddCircle" />

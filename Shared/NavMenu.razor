@@ -15,13 +15,14 @@
 	}
 	<MudNavLink Href="@Inventory.Route" Icon="@Icons.Material.Filled.Inventory">Products</MudNavLink>
 	<MudNavLink Href="@ActivityLogs.Route" Icon="@Icons.Material.Filled.Approval">Activity Logs</MudNavLink>
+	<MudNavLink Href="@Pos.Route" Icon="@Icons.Material.Filled.Dataset">POS</MudNavLink>
 	@if (AuthService.IsUserAdmin())
 	{
 		<MudNavLink Href="@Users.Route" Icon="@Icons.Material.Filled.ManageAccounts">Users</MudNavLink>
 		<MudNavLink Href="@NewTransactions.Route" Icon="@Icons.Material.Filled.Money">Transactions</MudNavLink>
-		<MudNavLink Href="@Pos.Route" Icon="@Icons.Material.Filled.Dataset">POS</MudNavLink>
 		<MudNavLink Href="@Memberships.Route" Icon="@Icons.Material.Filled.Face2">Membership</MudNavLink>
 
 	}
+	<MudNavLink Href="@ExportPdf.Route" Icon="@Icons.Material.Filled.Folder">Export PDF</MudNavLink>
 	<MudNavLink Href="@ChangePassword.Route" Icon="@Icons.Material.Filled.Security">Change Password</MudNavLink>
 </MudNavMenu>

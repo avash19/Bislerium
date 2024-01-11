@@ -11,10 +11,7 @@
             <MudTextField T="string" @bind-Value="@Email" Label="Email" Required="true" RequiredError="Email is required!"
                           Validation="@(new EmailAddressAttribute() { ErrorMessage = "The email address is invalid" })" />
             <MudTextField T="string" @bind-Value="@PhoneNumber" Label="Phone Number" Required="true" RequiredError="Phone Number is required!" />
-            <MudSwitch @bind-Value="@ThisDrinkFree" Label="This Drink Free" />
             <MudSwitch @bind-Value="@IsRegularCustomer" Label="Is  Regular" />
-            <MudSwitch @bind-Value="@GetsDiscount" Label="Gets Discount" />
-            <MudTextField T="int" @bind-Value="@DiscountPercent" Label="Discount Percent" />
         </MudForm>
     </DialogContent>
     <DialogActions>
